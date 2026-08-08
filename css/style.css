@@ -277,3 +277,314 @@ h1 {
         font-size: 17px;
     }
       }
+/* ================================= */
+/* СЦЕНА ПРИКЛЮЧЕНИЯ */
+/* ================================= */
+
+#adventureScene {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            rgba(0, 20, 35, 0.55),
+            rgba(0, 10, 20, 0.85)
+        ),
+        url("../assets/island-bg.svg");
+
+    background-size: cover;
+    background-position: center;
+
+    animation: sceneAppear 0.8s ease;
+}
+
+.adventure-content {
+    width: min(90%, 500px);
+
+    padding: 30px 24px;
+
+    text-align: center;
+
+    background: rgba(5, 25, 35, 0.88);
+
+    border: 2px solid rgba(255, 255, 255, 0.2);
+
+    border-radius: 28px;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.7);
+
+    backdrop-filter: blur(8px);
+
+    animation: adventureFloat 3s ease-in-out infinite;
+}
+
+.storm {
+    position: absolute;
+
+    top: 20px;
+    left: 0;
+
+    width: 100%;
+
+    font-size: 40px;
+
+    opacity: 0.7;
+
+    animation: waves 2s linear infinite;
+}
+
+.story-icon {
+    font-size: 90px;
+
+    margin-bottom: 10px;
+
+    animation: storyBounce 1.5s ease-in-out infinite;
+}
+
+.adventure-content h1 {
+    font-size: 34px;
+
+    margin-bottom: 20px;
+
+    color: #ffd34d;
+
+    text-shadow:
+        0 4px 10px black;
+}
+
+.adventure-content p {
+    min-height: 110px;
+
+    font-size: 20px;
+
+    line-height: 1.5;
+
+    color: white;
+
+    text-shadow:
+        0 2px 5px black;
+}
+
+#adventureScene #storyButton {
+    width: 100%;
+
+    padding: 16px;
+
+    margin-top: 15px;
+
+    border: none;
+
+    border-radius: 16px;
+
+    background: #ffcf3f;
+
+    color: #3b2800;
+
+    font-size: 19px;
+
+    font-weight: 900;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 5px 0 #9b7200;
+
+    transition: 0.15s;
+}
+
+#adventureScene #storyButton:active {
+    transform: translateY(4px);
+
+    box-shadow:
+        0 1px 0 #9b7200;
+}
+
+
+/* ================================= */
+/* ВИКТОРИНА */
+/* ================================= */
+
+#quizScene {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 110;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    background:
+        linear-gradient(
+            rgba(0, 50, 60, 0.65),
+            rgba(0, 10, 20, 0.9)
+        ),
+        url("../assets/island-bg.svg");
+
+    background-size: cover;
+
+    animation: sceneAppear 0.6s ease;
+}
+
+.quiz-box {
+    width: min(94%, 480px);
+
+    padding: 28px 22px;
+
+    border-radius: 28px;
+
+    background: rgba(255, 255, 255, 0.95);
+
+    color: #173b2a;
+
+    text-align: center;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+.quiz-icon {
+    font-size: 70px;
+
+    animation: storyBounce 1.5s infinite;
+}
+
+.quiz-box h1 {
+    color: #173b2a;
+
+    font-size: 32px;
+
+    text-shadow: none;
+
+    margin: 8px 0 10px;
+}
+
+.quiz-box p {
+    font-size: 17px;
+
+    line-height: 1.4;
+
+    margin-bottom: 20px;
+}
+
+.quiz-box h2 {
+    font-size: 20px;
+
+    margin-bottom: 18px;
+}
+
+.answers {
+    display: grid;
+
+    gap: 10px;
+}
+
+.answers button {
+    width: 100%;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    background: #e8f1ec;
+
+    color: #173b2a;
+
+    font-size: 17px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition: 0.15s;
+}
+
+.answers button:hover {
+    transform: scale(1.02);
+
+    background: #d5e9dc;
+}
+
+.answers button:active {
+    transform: scale(0.98);
+}
+
+#quizResult {
+    margin-top: 18px;
+
+    font-size: 18px;
+
+    font-weight: 800;
+
+    line-height: 1.4;
+}
+
+
+/* ================================= */
+/* АНИМАЦИИ */
+/* ================================= */
+
+@keyframes sceneAppear {
+
+    from {
+        opacity: 0;
+        transform: scale(1.05);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes adventureFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+@keyframes storyBounce {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-10px) rotate(-3deg);
+    }
+}
+
+@keyframes waves {
+
+    0% {
+        transform: translateX(-20px);
+    }
+
+    50% {
+        transform: translateX(20px);
+    }
+
+    100% {
+        transform: translateX(-20px);
+    }
+    }
