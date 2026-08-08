@@ -421,3 +421,171 @@ function showIsland() {
     });
 
     }
+// ========================================
+// 🎮 ЧАСТЬ 4 — УПРАВЛЕНИЕ И ИНТЕРАКТИВНОСТЬ
+// ========================================
+
+function activateIslandControls(island) {
+
+    const player = island.querySelector(".player");
+    const message = island.querySelector(".message");
+
+    let playerX = 48;
+
+    // ----------------------------------------
+    // 🚶 ДВИЖЕНИЕ ГЕРОЯ
+    // ----------------------------------------
+
+    function movePlayer(direction) {
+
+        if (direction === "left") {
+            playerX -= 5;
+        }
+
+        if (direction === "right") {
+            playerX += 5;
+        }
+
+        // Не даём герою уйти за экран
+        playerX = Math.max(5, Math.min(90, playerX));
+
+        player.style.left = playerX + "%";
+
+        player.style.transform =
+            direction === "left"
+                ? "scaleX(-1)"
+                : "scaleX(1)";
+    }
+
+
+    // ----------------------------------------
+    // ⌨️ КЛАВИАТУРА
+    // ----------------------------------------
+
+    document.addEventListener("keydown", event => {
+
+        if (!document.body.contains(island)) return;
+
+        if (event.key === "ArrowLeft" || event.key === "a") {
+            movePlayer("left");
+        }
+
+        if (event.key === "ArrowRight" || event.key === "d") {
+            movePlayer("right");
+        }
+
+    });
+
+
+    // ----------------------------------------
+    // 📱 КНОПКИ ДЛЯ ТЕЛЕФОНА
+    // ----------------------------------------
+
+    const controls = document.createElement("div");
+
+    controls.className = "mobile-controls";
+
+    controls.innerHTML = `
+        <button id="leftControl">⬅️</button>
+        <button id="actionControl">👋</button>
+        <button id="rightControl">➡️</button>
+    `;
+
+    island.appendChild(controls);
+
+
+    island.querySelector("#leftControl")
+        .addEventListener("click", () => {
+
+            movePlayer("left");
+
+        });
+
+
+    island.querySelector("#rightControl")
+        .addEventListener("click", () => {
+
+            movePlayer("right");
+
+        });
+
+
+    // ----------------------------------------
+    // 👋 КНОПКА ДЕЙСТВИЯ
+    // ----------------------------------------
+
+    island.querySelector("#actionControl")
+        .addEventListener("click", () => {
+
+            message.innerHTML =
+                "👋 Ты осматриваешься вокруг... " +
+                "Кажется, здесь что-то есть.";
+
+        });
+
+
+    // ----------------------------------------
+    // 📦 СУНДУК
+    // ----------------------------------------
+
+    const chest = island.querySelector(".chest");
+
+    chest.addEventListener("click", () => {
+
+        message.innerHTML =
+            "📦 Ты нашёл старый сундук! " +
+            "Но он заперт... 🔒";
+
+    });
+
+
+    // ----------------------------------------
+    // 🚤 ЛОДКА
+    // ----------------------------------------
+
+    const boat = island.querySelector(".boat");
+
+    boat.addEventListener("click", () => {
+
+        message.innerHTML =
+            "🚤 Лодка повреждена. " +
+            "Нужно найти материалы для ремонта.";
+
+    });
+
+
+    // ----------------------------------------
+    // 🌴 ПАЛЬМА
+    // ----------------------------------------
+
+    const palm = island.querySelector(".palm-tree");
+
+    palm.addEventListener("click", () => {
+
+        message.innerHTML =
+            "🌴 Ты осматриваешь пальму... " +
+            "🥥 Один кокос почти падает тебе на голову! 😂";
+
+    });
+
+}
+
+
+// ========================================
+// 🔗 ЗАПУСК УПРАВЛЕНИЯ
+// ========================================
+
+const originalShowIsland = showIsland;
+
+showIsland = function() {
+
+    originalShowIsland();
+
+    const island =
+        document.getElementById("islandScene");
+
+    if (island) {
+        activateIslandControls(island);
+    }
+
+};
