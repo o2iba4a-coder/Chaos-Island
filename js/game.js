@@ -589,3 +589,499 @@ showIsland = function() {
     }
 
 };
+// ========================================
+// 🎒 ЧАСТЬ 5 — ИНВЕНТАРЬ И ПРЕДМЕТЫ
+// ========================================
+
+function createInventory(island) {
+
+    let inventory = [];
+
+    const message = island.querySelector(".message");
+
+    const inventoryWindow = document.createElement("div");
+
+    inventoryWindow.className = "inventory-window";
+
+    inventoryWindow.innerHTML = `
+        <div class="inventory-box">
+
+            <button class="inventory-close">
+                ❌
+            </button>
+
+            <h2>🎒 РЮКЗАК</h2>
+
+            <p class="inventory-empty">
+                Рюкзак пока пуст.
+            </p>
+
+            <div class="inventory-items"></div>
+
+        </div>
+    `;
+
+    island.appendChild(inventoryWindow);
+
+    inventoryWindow.style.display = "none";
+
+
+    // ========================================
+    // 🎒 КНОПКА РЮКЗАКА
+    // ========================================
+
+    const inventoryButton =
+        island.querySelector("#inventoryButton");
+
+    inventoryButton.addEventListener("click", () => {
+
+        inventoryWindow.style.display = "flex";
+
+        updateInventory();
+
+    });
+
+
+    // ========================================
+    // ❌ ЗАКРЫТЬ РЮКЗАК
+    // ========================================
+
+    inventoryWindow
+        .querySelector(".inventory-close")
+        .addEventListener("click", () => {
+
+            inventoryWindow.style.display = "none";
+
+        });
+
+
+    // ========================================
+    // 📦 ДОБАВИТЬ ПРЕДМЕТ
+    // ========================================
+
+    function addItem(name, icon) {
+
+        if (inventory.some(item => item.name === name)) {
+            return;
+        }
+
+        inventory.push({
+            name: name,
+            icon: icon
+        });
+
+        updateInventory();
+
+    }
+
+
+    // ========================================
+    // 🎒 ОБНОВИТЬ ИНВЕНТАРЬ
+    // ========================================
+
+    function updateInventory() {
+
+        const items =
+            inventoryWindow.querySelector(".inventory-items");
+
+        const empty =
+            inventoryWindow.querySelector(".inventory-empty");
+
+
+        if (inventory.length === 0) {
+
+            empty.style.display = "block";
+
+            items.innerHTML = "";
+
+            return;
+
+        }
+
+
+        empty.style.display = "none";
+
+        items.innerHTML = "";
+
+
+        inventory.forEach(item => {
+
+            const element =
+                document.createElement("div");
+
+            element.className =
+                "inventory-item";
+
+            element.innerHTML = `
+                <span class="item-icon">
+                    ${item.icon}
+                </span>
+
+                <span>
+                    ${item.name}
+                </span>
+            `;
+
+            items.appendChild(element);
+
+        });
+
+    }
+
+
+    // ========================================
+    // 🥥 КОКОС
+    // ========================================
+
+    const palm =
+        island.querySelector(".palm-tree");
+
+    palm.addEventListener("dblclick", () => {
+
+        addItem("Кокос", "🥥");
+
+        message.innerHTML =
+            "🥥 Ты сорвал кокос и положил его в рюкзак!";
+
+    });
+
+
+    // ========================================
+    // 🧭 КОМПАС
+    // ========================================
+
+    const boat =
+        island.querySelector(".boat");
+
+    boat.addEventListener("dblclick", () => {
+
+        addItem("Старый компас", "🧭");
+
+        message.innerHTML =
+            "🧭 Ты нашёл старый компас возле лодки!";
+
+    });
+
+
+    // ========================================
+    // 📜 СЕКРЕТНАЯ КАРТА
+    // ========================================
+
+    const chest =
+        island.querySelector(".chest");
+
+    chest.addEventListener("dblclick", () => {
+
+        addItem("Старая карта", "🗺️");
+
+        message.innerHTML =
+            "🗺️ В сундуке оказалась старая карта острова!";
+
+    });
+
+}
+
+
+// ========================================
+// 🔗 ПОДКЛЮЧАЕМ ИНВЕНТАРЬ
+// ========================================
+
+const oldActivateIslandControls =
+    activateIslandControls;
+
+activateIslandControls = function(island) {
+
+    oldActivateIslandControls(island);
+
+    createInventory(island);
+
+};
+// ========================================
+// 👹 ЧАСТЬ 6 — ПЕРВЫЙ ВРАГ
+// ========================================
+
+function createFunnyEnemy(island) {
+
+    const message = island.querySelector(".message");
+
+    const enemy = document.createElement("div");
+
+    enemy.className = "funny-enemy";
+
+    enemy.innerHTML = `
+        <div class="enemy-face">
+            👹
+        </div>
+
+        <div class="enemy-name">
+            КОКОСИК
+        </div>
+    `;
+
+    island.querySelector(".island-world").appendChild(enemy);
+
+
+    // ========================================
+    // 👹 ВРАГ ПОДХОДИТ К ГЕРОЮ
+    // ========================================
+
+    let enemyX = 78;
+
+    let direction = -1;
+
+    const moveEnemy = setInterval(() => {
+
+        if (!document.body.contains(island)) {
+
+            clearInterval(moveEnemy);
+
+            return;
+        }
+
+
+        enemyX += direction * 0.4;
+
+
+        if (enemyX < 60) {
+            direction = 1;
+        }
+
+        if (enemyX > 82) {
+            direction = -1;
+        }
+
+
+        enemy.style.left = enemyX + "%";
+
+    }, 100);
+
+
+    // ========================================
+    // 😂 КЛИК ПО ВРАГУ
+    // ========================================
+
+    enemy.addEventListener("click", () => {
+
+        message.innerHTML =
+            "👹 Кокосик: «Эй! Это мой остров!»<br><br>" +
+            "😂 Ты: «А кто тебя назначил главным?»";
+
+
+        enemy.querySelector(".enemy-face")
+            .textContent = "😳";
+
+
+        setTimeout(() => {
+
+            enemy.querySelector(".enemy-face")
+                .textContent = "👹";
+
+        }, 1200);
+
+    });
+
+
+    // ========================================
+    // 💥 ВРАГ ПОЛУЧИЛ УДАР
+    // ========================================
+
+    enemy.addEventListener("dblclick", () => {
+
+        message.innerHTML =
+            "💥 БУМ!<br><br>" +
+            "Кокосик упал на землю! 😂";
+
+        enemy.querySelector(".enemy-face")
+            .textContent = "😵";
+
+
+        setTimeout(() => {
+
+            enemy.querySelector(".enemy-face")
+                .textContent = "👹";
+
+        }, 2000);
+
+    });
+
+}
+
+
+// ========================================
+// 🔗 ПОДКЛЮЧАЕМ ВРАГА К ОСТРОВУ
+// ========================================
+
+const previousCreateInventory =
+    createInventory;
+
+createInventory = function(island) {
+
+    previousCreateInventory(island);
+
+    createFunnyEnemy(island);
+
+};
+// ========================================
+// 🧩 ЧАСТЬ 7 — ПЕРВАЯ ГОЛОВОЛОМКА
+// ========================================
+
+function createPuzzle(island) {
+
+    const message = island.querySelector(".message");
+    const chest = island.querySelector(".chest");
+
+    let solved = false;
+
+    chest.addEventListener("click", () => {
+
+        if (solved) {
+
+            message.innerHTML =
+                "📦 Сундук уже открыт! " +
+                "Ты нашёл карту острова 🗺️";
+
+            return;
+        }
+
+        const puzzle = document.createElement("div");
+
+        puzzle.className = "puzzle-window";
+
+        puzzle.innerHTML = `
+            <div class="puzzle-box">
+
+                <button class="puzzle-close">
+                    ❌
+                </button>
+
+                <div class="puzzle-icon">
+                    🔐
+                </div>
+
+                <h2>
+                    СЕКРЕТНЫЙ СУНДУК
+                </h2>
+
+                <p>
+                    На замке написано:
+                </p>
+
+                <h3>
+                    🌴 + 🌴 + 🦀 = ?
+                </h3>
+
+                <p>
+                    Выбери правильный код:
+                </p>
+
+                <div class="puzzle-buttons">
+
+                    <button data-code="5">
+                        🔢 5
+                    </button>
+
+                    <button data-code="7">
+                        🔢 7
+                    </button>
+
+                    <button data-code="9">
+                        🔢 9
+                    </button>
+
+                    <button data-code="12">
+                        🔢 12
+                    </button>
+
+                </div>
+
+                <div class="puzzle-result"></div>
+
+            </div>
+        `;
+
+        island.appendChild(puzzle);
+
+
+        // ========================================
+        // ❌ ЗАКРЫТЬ
+        // ========================================
+
+        puzzle
+            .querySelector(".puzzle-close")
+            .addEventListener("click", () => {
+
+                puzzle.remove();
+
+            });
+
+
+        // ========================================
+        // 🔢 ПРОВЕРКА ОТВЕТА
+        // ========================================
+
+        puzzle
+            .querySelectorAll(".puzzle-buttons button")
+            .forEach(button => {
+
+                button.addEventListener("click", () => {
+
+                    const code =
+                        button.dataset.code;
+
+                    const result =
+                        puzzle.querySelector(
+                            ".puzzle-result"
+                        );
+
+
+                    if (code === "7") {
+
+                        solved = true;
+
+                        result.innerHTML =
+                            "🎉 ПРАВИЛЬНО!<br><br>" +
+                            "🔓 СУНДУК ОТКРЫТ!";
+
+                        setTimeout(() => {
+
+                            puzzle.remove();
+
+                            chest.innerHTML = "📖";
+
+                            message.innerHTML =
+                                "🎉 Ты открыл сундук!<br><br>" +
+                                "🗺️ Внутри лежит старая карта острова!";
+
+                        }, 1200);
+
+                    } else {
+
+                        result.innerHTML =
+                            "😂 Неправильно!<br>" +
+                            "Попробуй ещё раз.";
+
+                    }
+
+                });
+
+            });
+
+    });
+
+}
+
+
+// ========================================
+// 🔗 ПОДКЛЮЧАЕМ ГОЛОВОЛОМКУ
+// ========================================
+
+const oldCreateFunnyEnemy =
+    createFunnyEnemy;
+
+createFunnyEnemy = function(island) {
+
+    oldCreateFunnyEnemy(island);
+
+    createPuzzle(island);
+
+};
