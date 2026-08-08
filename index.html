@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Остров Хаоса 🏝️</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+</head>
+
+<body>
+
+    <div class="game">
+
+        <div class="overlay"></div>
+
+        <div class="coconut one">🥥</div>
+        <div class="coconut two">🥥</div>
+
+        <main class="menu">
+
+            <div class="emoji">
+                🏝️
+            </div>
+
+            <h1>
+                Остров<br>
+                Хаоса
+            </h1>
+
+            <p class="subtitle">
+                Приключения начинаются здесь... 😈
+            </p>
+
+            <div class="buttons">
+
+                <button
+                    class="new-game"
+                    data-action="new"
+                >
+                    ▶️ Новая игра
+                </button>
+
+                <button
+                    class="continue"
+                    data-action="continue"
+                >
+                    💾 Продолжить
+                </button>
+
+                <button
+                    class="settings"
+                    data-action="settings"
+                >
+                    ⚙️ Настройки
+                </button>
+
+            </div>
+
+            <div class="version">
+                Версия 0.1 • Первый остров 🏝️
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <div
+        class="modal hidden"
+        id="modal"
+    >
+
+        <div class="modal-card">
+
+            <button
+                class="close"
+                id="close"
+            >
+                ✕
+            </button>
+
+            <div id="modalContent"></div>
+
+        </div>
+
+    </div>
+
+
+    <script src="js/game.js"></script>
+
+</body>
+  </html>
