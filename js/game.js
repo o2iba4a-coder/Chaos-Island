@@ -1,169 +1,186 @@
-const modal = document.getElementById("modal");
-const content = document.getElementById("modalContent");
-const close = document.getElementById("close");
+// ========================================
+// 🏝️ CHAOS ISLAND — GAME.JS
+// ЧАСТЬ 1: ОСНОВА И НАЧАЛО ПРИКЛЮЧЕНИЯ
+// ========================================
 
-function sound() {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+document.addEventListener("DOMContentLoaded", () => {
 
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
+    // Получаем элементы из index.html
+    const modal = document.getElementById("modal");
+    const content = document.getElementById("modalContent");
+    const close = document.getElementById("close");
 
-    osc.frequency.value = 520;
-    gain.gain.value = 0.06;
+    // ----------------------------------------
+    // 🔊 ЗВУК КНОПОК
+    // ----------------------------------------
 
-    osc.connect(gain);
-    gain.connect(ctx.destination);
+    function sound() {
+        try {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (!AudioCtx) return;
 
-    osc.start();
-    osc.stop(ctx.currentTime + 0.08);
-}
+            const ctx = new AudioCtx();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
 
+            osc.frequency.value = 520;
+            gain.gain.value = 0.05;
 
-// ================================
-// НАЧАЛО ПРИКЛЮЧЕНИЯ
-// ================================
+            osc.connect(gain);
+            gain.connect(ctx.destination);
 
-function startAdventure() {
+            osc.start();
+            osc.stop(ctx.currentTime + 0.08);
+        } catch (error) {
+            console.log("Звук недоступен");
+        }
+    }
 
-    sound();
+    // ----------------------------------------
+    // 🏝️ НАЧАЛО ПРИКЛЮЧЕНИЯ
+    // ----------------------------------------
 
-    const scene = document.createElement("div");
-
-    scene.id = "adventureScene";
-
-    scene.innerHTML = `
-        <div class="adventure-content">
-
-            <div class="storm">
-                🌊
-            </div>
-
-            <div class="story-icon">
-                🚢
-            </div>
-
-            <h1>
-                КОРАБЛЕКРУШЕНИЕ
-            </h1>
-
-            <p id="storyText">
-                Ночь. Сильный шторм бушует вокруг корабля...
-            </p>
-
-            <button id="storyButton">
-                ▶️ Продолжить
-            </button>
-
-        </div>
-    `;
-
-    document.body.appendChild(scene);
-
-    const text = document.getElementById("storyText");
-    const button = document.getElementById("storyButton");
-
-    let step = 0;
-
-    button.addEventListener("click", () => {
+    function startAdventure() {
 
         sound();
 
-        step++;
+        const scene = document.createElement("div");
+        scene.id = "adventureScene";
 
-        if (step === 1) {
+        scene.innerHTML = `
+            <div class="adventure-content">
 
-            text.innerHTML =
-                "🌊 Огромная волна ударяет по кораблю!<br><br>" +
-                "💥 БУУУМ!";
+                <div class="storm">🌊</div>
 
-            document.querySelector(".story-icon").innerHTML = "💥";
+                <div class="story-icon">🚢</div>
 
-        }
+                <h1>КОРАБЛЕКРУШЕНИЕ</h1>
 
-        else if (step === 2) {
+                <p id="storyText">
+                    Ночь. Сильный шторм бушует вокруг корабля...
+                </p>
 
-            text.innerHTML =
-                "Ты падаешь в воду...<br><br>" +
-                "Всё вокруг становится тёмным... 🌊";
+                <button id="storyButton">
+                    ▶️ Продолжить
+                </button>
 
-            document.querySelector(".story-icon").innerHTML = "🌊";
+            </div>
+        `;
 
-        }
+        document.body.appendChild(scene);
 
-        else if (step === 3) {
+        const text = document.getElementById("storyText");
+        const button = document.getElementById("storyButton");
 
-            text.innerHTML =
-                "Ты открываешь глаза...<br><br>" +
-                "Перед тобой неизвестный остров. 🏝️";
+        let step = 0;
 
-            document.querySelector(".story-icon").innerHTML = "🏝️";
+        button.addEventListener("click", () => {
 
-        }
+            sound();
 
-        else if (step === 4) {
+            step++;
 
-            text.innerHTML =
-                "На берегу лежит твой рюкзак. 🎒<br><br>" +
-                "Но рядом слышится странный звук...";
+            if (step === 1) {
+                text.innerHTML =
+                    "🌊 Огромная волна ударяет по кораблю!<br><br>💥 БУУУМ!";
 
-            document.querySelector(".story-icon").innerHTML = "🎒";
+            } else if (step === 2) {
+                text.innerHTML =
+                    "Ты падаешь на палубу...<br><br>" +
+                    "Всё вокруг становится тёмным...";
 
-            button.innerHTML = "👀 Осмотреться";
+            } else if (step === 3) {
+                text.innerHTML =
+                    "Ты открываешь глаза...<br><br>" +
+                    "Перед тобой неизвестный остров.";
 
-        }
+            } else if (step === 4) {
+                text.innerHTML =
+                    "На берегу лежит твой рюкзак.<br><br>" +
+                    "Но рядом слышится странный звук...";
 
-        else if (step === 5) {
+            } else if (step === 5) {
+                text.innerHTML =
+                    "Ты медленно поворачиваешься...<br><br>" +
+                    "👀 Кто-то наблюдает за тобой.";
 
-            text.innerHTML =
-                "Ты медленно поворачиваешь голову...<br><br>" +
-                "И видишь огромного краба. 🦀";
+            } else {
+                scene.remove();
+                showQuiz();
+            }
 
-            document.querySelector(".story-icon").innerHTML = "🦀";
+        });
+    }
 
-            button.innerHTML = "🦀 Подойти к крабу";
+    // ----------------------------------------
+    // 🎮 КНОПКИ ГЛАВНОГО МЕНЮ
+    // ----------------------------------------
 
-        }
+    document.querySelectorAll("button").forEach(button => {
 
-        else if (step === 6) {
+        button.addEventListener("click", () => {
 
-            text.innerHTML =
-                "Краб смотрит на тебя и говорит:<br><br>" +
-                "<b>«ЭЙ! Ты чего сюда припёрся?!» 😂</b>";
+            const action = button.dataset.action;
 
-            document.querySelector(".story-icon").innerHTML = "🦀";
+            if (action === "new") {
+                startAdventure();
+            }
 
-            button.innerHTML = "😂 Что ответить?";
+            if (action === "continue") {
+                show(
+                    "💾 Сохранение",
+                    "Сохранений пока нет.<br><br>Начни новую игру!"
+                );
+            }
 
-        }
+            if (action === "settings") {
+                show(
+                    "⚙️ Настройки",
+                    "🔊 Звук: ВКЛ<br>" +
+                    "🎵 Музыка: ВКЛ"
+                );
+            }
 
-        else if (step === 7) {
-
-            text.innerHTML =
-                "Ты понимаешь одну вещь:<br><br>" +
-                "<b>Этот остров явно НЕ необитаемый...</b> 😈";
-
-            document.querySelector(".story-icon").innerHTML = "😈";
-
-            button.innerHTML = "🏝️ Начать приключение";
-
-        }
-
-        else {
-
-            scene.remove();
-
-            showQuiz();
-
-        }
+        });
 
     });
 
-}
+    // ----------------------------------------
+    // 🪟 ОКНО
+    // ----------------------------------------
 
+    function show(title, text) {
 
-// ================================
-// ПЕРВАЯ ВИКТОРИНА
-// ================================
+        if (!modal || !content) return;
+
+        content.innerHTML = `
+            <h2>${title}</h2>
+            <p>${text}</p>
+        `;
+
+        modal.classList.remove("hidden");
+    }
+
+    if (close && modal) {
+
+        close.addEventListener("click", () => {
+            modal.classList.add("hidden");
+        });
+
+        modal.addEventListener("click", event => {
+
+            if (event.target === modal) {
+                modal.classList.add("hidden");
+            }
+
+        });
+
+    }
+
+});
+// ========================================
+// 🏝️ ЧАСТЬ 2 — ПЕРВАЯ ЗАГАДКА И ОСТРОВ
+// ========================================
 
 function showQuiz() {
 
@@ -174,155 +191,233 @@ function showQuiz() {
     quiz.innerHTML = `
         <div class="quiz-box">
 
-            <div class="quiz-icon">
-                🦀
-            </div>
+            <div class="quiz-icon">🗿</div>
 
-            <h1>
-                Краб Боря
-            </h1>
+            <h1>ЗАГАДКА ОСТРОВА</h1>
 
             <p>
-                «Если хочешь пройти дальше,
-                ответь на мой вопрос!» 😈
+                Ты находишь старый камень с надписью.
+                На нём появляется вопрос...
             </p>
 
             <h2>
-                🌍 Какая планета ближе всего к Солнцу?
+                Какой предмет важнее всего для выживания?
             </h2>
 
-            <div class="answers">
+            <div class="quiz-answers">
 
                 <button data-answer="wrong">
-                    🌎 Земля
+                    🪙 Золото
                 </button>
 
                 <button data-answer="wrong">
-                    🔴 Марс
+                    💎 Алмаз
                 </button>
 
                 <button data-answer="correct">
-                    ☀️ Меркурий
+                    💧 Вода
                 </button>
 
                 <button data-answer="wrong">
-                    🪐 Юпитер
+                    📱 Телефон
                 </button>
 
             </div>
 
-            <div id="quizResult"></div>
+            <p id="quizResult"></p>
 
         </div>
     `;
 
     document.body.appendChild(quiz);
 
-    document.querySelectorAll(".answers button").forEach(button => {
+    const buttons = quiz.querySelectorAll(".quiz-answers button");
+    const result = quiz.querySelector("#quizResult");
+
+    buttons.forEach(button => {
 
         button.addEventListener("click", () => {
 
-            sound();
+            const answer = button.dataset.answer;
 
-            const result =
-                document.getElementById("quizResult");
-
-            if (button.dataset.answer === "correct") {
+            if (answer === "correct") {
 
                 result.innerHTML =
-                    "🎉 ПРАВИЛЬНО!<br><br>" +
-                    "🦀 Боря: «Ладно, проходи!»";
+                    "✅ Правильно! Вода — самое важное для выживания.";
+
+                button.disabled = true;
+
+                setTimeout(() => {
+                    quiz.remove();
+                    showIsland();
+                }, 1500);
 
             } else {
 
                 result.innerHTML =
-                    "😂 НЕПРАВИЛЬНО!<br><br>" +
-                    "🦀 Боря: «Ха-ха! Попробуй ещё раз!»";
+                    "❌ Неправильно... Попробуй ещё раз.";
 
             }
 
         });
 
     });
-
 }
 
 
-// ================================
-// СТАРОЕ МЕНЮ
-// ================================
+// ========================================
+// 🌴 НАСТОЯЩИЙ ЭКРАН ОСТРОВА
+// ========================================
 
-function show(title, text) {
+function showIsland() {
 
-    sound();
+    const island = document.createElement("div");
 
-    content.innerHTML = `
-        <h2>${title}</h2>
-        <p>${text}</p>
+    island.id = "islandScene";
+
+    island.innerHTML = `
+
+        <div class="island-game">
+
+            <div class="island-top">
+
+                <div class="location">
+                    📍 Неизвестный остров
+                </div>
+
+                <div class="day">
+                    ☀️ День 1
+                </div>
+
+            </div>
+
+
+            <div class="island-world">
+
+                <div class="sun">☀️</div>
+
+                <div class="cloud cloud-one">☁️</div>
+                <div class="cloud cloud-two">☁️</div>
+
+                <div class="island-mountain">
+                    ⛰️
+                </div>
+
+                <div class="palm-tree">
+                    🌴
+                </div>
+
+                <div class="player">
+                    🧍
+                </div>
+
+                <div class="boat">
+                    🚤
+                </div>
+
+                <div class="chest">
+                    📦
+                </div>
+
+            </div>
+
+
+            <div class="island-bottom">
+
+                <div class="stats">
+
+                    <div>
+                        ❤️
+                        <span>100</span>
+                    </div>
+
+                    <div>
+                        💧
+                        <span>100</span>
+                    </div>
+
+                    <div>
+                        🍖
+                        <span>100</span>
+                    </div>
+
+                    <div>
+                        ⚡
+                        <span>100</span>
+                    </div>
+
+                </div>
+
+
+                <div class="message">
+                    🏝️ Ты выжил после кораблекрушения.
+                    Найди способ покинуть остров.
+                </div>
+
+
+                <div class="island-buttons">
+
+                    <button id="exploreButton">
+                        🔍 Исследовать
+                    </button>
+
+                    <button id="inventoryButton">
+                        🎒 Рюкзак
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
     `;
 
-    modal.classList.remove("hidden");
-}
+    document.body.appendChild(island);
 
 
-// ================================
-// КНОПКИ МЕНЮ
-// ================================
+    // ========================================
+    // 🔍 ИССЛЕДОВАТЬ
+    // ========================================
 
-document.querySelectorAll(".buttons button").forEach(button => {
+    const exploreButton =
+        island.querySelector("#exploreButton");
 
-    button.addEventListener("click", () => {
+    exploreButton.addEventListener("click", () => {
 
-        const action = button.dataset.action;
+        exploreButton.innerHTML = "🔎 Ищем...";
 
-        if (action === "new") {
+        setTimeout(() => {
 
-            modal.classList.add("hidden");
+            exploreButton.innerHTML =
+                "🌴 Найден кокос!";
 
-            startAdventure();
+            const message =
+                island.querySelector(".message");
 
-        }
+            message.innerHTML =
+                "🥥 Ты нашёл кокос возле пальмы. " +
+                "Это может пригодиться.";
 
-        if (action === "continue") {
-
-            show(
-                "💾 Сохранение",
-                "Сохранений пока нет. Начни новую игру!"
-            );
-
-        }
-
-        if (action === "settings") {
-
-            show(
-                "⚙️ Настройки",
-                "🔊 Звук: ВКЛ<br>" +
-                "🎵 Музыка: ВКЛ"
-            );
-
-        }
+        }, 1000);
 
     });
 
-});
 
+    // ========================================
+    // 🎒 РЮКЗАК
+    // ========================================
 
-// ================================
-// ЗАКРЫТИЕ ОКНА
-// ================================
+    const inventoryButton =
+        island.querySelector("#inventoryButton");
 
-close.addEventListener("click", () => {
+    inventoryButton.addEventListener("click", () => {
 
-    modal.classList.add("hidden");
+        alert(
+            "🎒 РЮКЗАК\n\n" +
+            "Пока пусто.\n\n" +
+            "Исследуй остров, чтобы найти предметы."
+        );
 
-});
-
-modal.addEventListener("click", event => {
-
-    if (event.target === modal) {
-
-        modal.classList.add("hidden");
+    });
 
     }
-
-});
