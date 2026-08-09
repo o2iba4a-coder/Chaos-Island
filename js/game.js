@@ -765,18 +765,17 @@ function createInventory(island) {
     // ========================================
     // 📜 СЕКРЕТНАЯ КАРТА
     // ========================================
+const chest =
+    island.querySelector(".chest");
 
-    const chest =
-        island.querySelector(".chest");
+chest.addEventListener("dblclick", () => {
 
-    chest.addEventListener("dblclick", () => {
+    addItem("Старая карта", "🗺️");
 
-        addItem("Старая карта", "🗺️");
+    message.innerHTML =
+        "🗺️ В сундуке оказалась старая карта острова!";
 
-        message.innerHTML =
-            "🗺️ В сундуке оказалась старая карта острова!";
-
-    });
+});
 
 }
 
