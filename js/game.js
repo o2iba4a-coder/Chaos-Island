@@ -530,13 +530,12 @@ function activateIslandControls(island) {
 
     const chest = island.querySelector(".chest");
 
-    chest.addEventListener("click", () => {
+chest.addEventListener("click", () => {
 
-        message.innerHTML =
-            "📦 Ты нашёл старый сундук! " +
-            "Но он заперт... 🔒";
+    message.innerHTML =
+        "🔐 На сундуке кодовый замок!";
 
-    });
+});
 
 
     // ----------------------------------------
