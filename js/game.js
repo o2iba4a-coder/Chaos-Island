@@ -5,11 +5,32 @@
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    const newGameButton = document.querySelector(".new-game");
+    console.log("🏝️ Chaos Island: JS работает!");
 
-    if (newGameButton) {
-        newGameButton.addEventListener("click", startGame);
+    // Ищем кнопку Новой игры несколькими способами
+    const newGameButton =
+        document.querySelector(".new-game") ||
+        document.querySelector("#newGame") ||
+        document.querySelector('[data-action="new"]') ||
+        document.querySelector('button');
+
+    if (!newGameButton) {
+
+        console.error(
+            "❌ Кнопка Новой игры не найдена!"
+        );
+
+        return;
     }
+
+
+    newGameButton.addEventListener("click", () => {
+
+        console.log("🎮 Новая игра запущена!");
+
+        startGame();
+
+    });
 
 });
 
