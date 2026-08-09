@@ -1084,3 +1084,95 @@ createFunnyEnemy = function(island) {
     createPuzzle(island);
 
 };
+// ========================================
+// 🔐 ИСПРАВЛЕНИЕ СУНДУКА
+// ========================================
+
+document.addEventListener("click", function(event) {
+
+    const chest = event.target.closest(".chest");
+
+    if (!chest) return;
+
+    const island = document.getElementById("islandScene");
+
+    if (!island) return;
+
+    // Если окно головоломки уже открыто — ничего не делаем
+    if (island.querySelector(".puzzle-window")) return;
+
+    const puzzle = document.createElement("div");
+
+    puzzle.className = "puzzle-window";
+
+    puzzle.innerHTML = `
+        <div class="puzzle-box">
+
+            <button class="puzzle-close">❌</button>
+
+            <div class="puzzle-icon">🔐</div>
+
+            <h2>СЕКРЕТНЫЙ СУНДУК</h2>
+
+            <p>На замке написано:</p>
+
+            <h3>🌴 + 🌴 + 🦀 = ?</h3>
+
+            <p>Выбери правильный код:</p>
+
+            <div class="puzzle-buttons">
+
+                <button data-code="5">🔢 5</button>
+                <button data-code="7">🔢 7</button>
+                <button data-code="9">🔢 9</button>
+                <button data-code="12">🔢 12</button>
+
+            </div>
+
+            <div class="puzzle-result"></div>
+
+        </div>
+    `;
+
+    island.appendChild(puzzle);
+
+    puzzle.querySelector(".puzzle-close").onclick = () => {
+        puzzle.remove();
+    };
+
+    puzzle.querySelectorAll("[data-code]").forEach(button => {
+
+        button.onclick = () => {
+
+            const result =
+                puzzle.querySelector(".puzzle-result");
+
+            if (button.dataset.code === "7") {
+
+                result.innerHTML =
+                    "🎉 ПРАВИЛЬНО!<br><br>" +
+                    "🔓 СУНДУК ОТКРЫТ!";
+
+                setTimeout(() => {
+
+                    puzzle.remove();
+
+                    chest.textContent = "📖";
+
+                    island.querySelector(".message").innerHTML =
+                        "🗺️ Ты нашёл старую карту острова!";
+
+                }, 1000);
+
+            } else {
+
+                result.innerHTML =
+                    "😂 Неправильно! Попробуй ещё раз.";
+
+            }
+
+        };
+
+    });
+
+});
